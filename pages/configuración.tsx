@@ -1,7 +1,11 @@
 import React, { useRef } from 'react';
 import { Download, Upload, Save, AlertTriangle, Database, Smartphone, ChevronLeft } from 'lucide-react';
 
-export const Settings: React.FC = () => {
+interface SettingsProps {
+  onBack: () => void;
+}
+
+export const Settings: React.FC<SettingsProps> = ({ onBack }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Claves de localStorage que queremos guardar
@@ -97,7 +101,7 @@ export const Settings: React.FC = () => {
     <div className="pb-24 pt-6 px-4 max-w-md mx-auto animate-fade-in text-gray-900 dark:text-white">
       <div className="flex items-center gap-3 mb-6">
         <button 
-          onClick={() => window.location.reload()} // Quick way to go back to default tab state if strictly needed, or relies on BottomNav
+          onClick={onBack}
           className="p-2 -ml-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
         >
            <ChevronLeft size={24} />
