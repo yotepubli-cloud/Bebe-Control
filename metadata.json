@@ -1,0 +1,5 @@
+{
+  "name": "Bebe Control",
+  "description": "A comprehensive baby tracking application featuring growth charts, vaccination schedules, expense tracking, and document storage with a modern dark UI.",
+  "requestFramePermissions": []
+}

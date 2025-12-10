@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leo's Baby Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: 'var(--primary)',
+              primaryDark: 'var(--primary-dark)',
+              darkBg: 'var(--bg-main)',
+              cardBg: 'var(--bg-card)',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Custom scrollbar for webkit */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-main); 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155; 
+        border-radius: 3px;
+      }
+      
+      /* CSS Variables for Theming */
+      :root {
+        --primary: #2dd4bf;       /* Teal-400 */
+        --primary-dark: #14b8a6;
+        --bg-main: #f1f5f9;       /* Slate-100 (Light Mode Background) */
+        --bg-card: #ffffff;       /* White (Light Mode Card) */
+        --text-main: #0f172a;
+      }
+
+      .dark {
+        --primary: #2dd4bf;
+        --primary-dark: #14b8a6;
+        --bg-main: #0f172a;       /* Slate-900 (Dark Mode Background) */
+        --bg-card: #1e293b;       /* Slate-800 (Dark Mode Card) */
+        --text-main: #ffffff;
+      }
+
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Helper to force text colors in light mode if needed, 
+         though using text-gray-X classes usually adapts well if we rely on standard tailwind logic.
+         Since we are using custom bg colors, we need to ensure text contrasts.
+      */
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
