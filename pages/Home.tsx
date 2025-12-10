@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Bell, Sun, Moon, Pencil, TrendingUp, ChevronRight, Weight, Ruler } from 'lucide-react';
+import { Bell, Sun, Moon, Pencil, TrendingUp, ChevronRight, Weight, Ruler, Settings } from 'lucide-react';
 import { BabyProfile, CalendarEvent, Expense, Tab, GrowthRecord } from '../types';
 import { ProfileModal } from '../components/ProfileModal';
 import { calculatePercentile, getPercentileLabel, getPercentileColor } from '../utils/growthData';
@@ -87,6 +87,12 @@ export const Home: React.FC<HomeProps> = ({
            </div>
         </button>
         <div className="flex gap-3">
+          <button 
+            onClick={() => onTabChange('ajustes')}
+            className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white bg-cardBg rounded-full border border-gray-200 dark:border-gray-800 shadow-sm transition-colors"
+          >
+            <Settings size={20} />
+          </button>
           <button 
             onClick={toggleTheme}
             className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white bg-cardBg rounded-full border border-gray-200 dark:border-gray-800 shadow-sm transition-colors"
