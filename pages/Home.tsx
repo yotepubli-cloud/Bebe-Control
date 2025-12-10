@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Bell, Sun, Moon, Pencil, TrendingUp, ChevronRight, Weight, Ruler, Settings as SettingsIcon } from 'lucide-react';
+import { Bell, Sun, Moon, Pencil, ChevronRight, Weight, Ruler, Settings as SettingsIcon } from 'lucide-react';
 import { BabyProfile, CalendarEvent, Expense, Tab, GrowthRecord } from '../types';
 import { ProfileModal } from '../components/ProfileModal';
 import { calculatePercentile, getPercentileLabel, getPercentileColor } from '../utils/growthData';
@@ -86,11 +86,11 @@ export const Home: React.FC<HomeProps> = ({
            </div>
         </button>
         <div className="flex gap-3">
-          {/* Settings Button - Primary Action */}
+          {/* Settings Button */}
           <button 
             onClick={() => onTabChange('ajustes')}
-            className="p-2 text-primary bg-primary/10 hover:bg-primary/20 rounded-full border border-primary/20 shadow-sm transition-colors"
-            title="Ajustes y Copia de Seguridad"
+            className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white bg-cardBg rounded-full border border-gray-200 dark:border-gray-800 shadow-sm transition-colors"
+            title="Ajustes"
           >
             <SettingsIcon size={20} />
           </button>
