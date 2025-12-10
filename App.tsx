@@ -4,6 +4,7 @@ import { Agenda } from './pages/Agenda';
 import { Growth } from './pages/Growth';
 import { Expenses } from './pages/Expenses';
 import { Documents } from './pages/Documents';
+import { Settings } from './pages/Settings';
 import { BottomNav } from './components/BottomNav';
 import { Tab, BabyProfile, CalendarEvent, Expense, GrowthRecord, DocumentFile } from './types';
 import { INITIAL_PROFILE, MOCK_EVENTS, MOCK_EXPENSES, MOCK_DOCS, MOCK_WEIGHT_HISTORY, MOCK_HEIGHT_HISTORY } from './constants';
@@ -151,6 +152,10 @@ const App: React.FC = () => {
             onUpdate={handleUpdateDoc}
             onDelete={handleDeleteDoc}
           />
+        );
+      case 'ajustes':
+        return (
+          <Settings onBack={() => setActiveTab('inicio')} />
         );
       default:
         return (
