@@ -18,8 +18,12 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, pro
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, avatar: imageUrl });
+      // Convert image to Base64 to store in localStorage
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, avatar: reader.result as string });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -132,4 +136,3 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose, pro
       </div>
     </div>
   );
-};
