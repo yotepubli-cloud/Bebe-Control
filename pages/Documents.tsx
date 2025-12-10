@@ -24,9 +24,11 @@ export const Documents: React.FC<DocumentsProps> = ({ docs, onAdd, onUpdate, onD
   const [date, setDate] = useState('');
   const [tag, setTag] = useState('Informes');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [base64File, setBase64File] = useState<string | null>(null);
 
   const openModal = (doc?: DocumentFile) => {
     setSelectedFile(null);
+    setBase64File(null);
     if (doc) {
         setEditingDoc(doc);
         setName(doc.name);
@@ -49,6 +51,13 @@ export const Documents: React.FC<DocumentsProps> = ({ docs, onAdd, onUpdate, onD
           if (!name) {
               setName(file.name.split('.')[0]);
           }
+
+          // Read file as base64 for persistence
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              setBase64File(reader.result as string);
+          };
+          reader.readAsDataURL(file);
       }
   };
 
@@ -60,9 +69,13 @@ export const Documents: React.FC<DocumentsProps> = ({ docs, onAdd, onUpdate, onD
     let type = editingDoc?.type || 'pdf';
 
     if (selectedFile) {
-        fileUrl = URL.createObjectURL(selectedFile);
+        // Only update file details if a new file is selected
         size = `${(selectedFile.size / 1024 / 1024).toFixed(1)} MB`;
         type = selectedFile.type.includes('image') ? 'img' : 'pdf';
+        
+        if (base64File) {
+             fileUrl = base64File;
+        }
     }
 
     const docData = {
@@ -84,7 +97,16 @@ export const Documents: React.FC<DocumentsProps> = ({ docs, onAdd, onUpdate, onD
 
   const handleView = (doc: DocumentFile) => {
       if (doc.fileUrl) {
-          window.open(doc.fileUrl, '_blank');
+          // Open base64 in new tab
+          const win = window.open();
+          if (win) {
+              if (doc.type === 'img') {
+                  win.document.write(`<img src="${doc.fileUrl}" style="max-width:100%"/>`);
+              } else {
+                  // For PDF base64, usually best to use an iframe or embed, but direct open works in many browsers
+                  win.document.write(`<iframe src="${doc.fileUrl}" width="100%" height="100%" style="border:none;"></iframe>`);
+              }
+          }
       } else {
           alert('Este es un documento de ejemplo sin archivo real adjunto.');
       }
@@ -306,4 +328,3 @@ export const Documents: React.FC<DocumentsProps> = ({ docs, onAdd, onUpdate, onD
       )}
     </div>
   );
-};
