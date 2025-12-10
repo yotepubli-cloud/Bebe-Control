@@ -8,39 +8,56 @@ import { BottomNav } from './components/BottomNav';
 import { Tab, BabyProfile, CalendarEvent, Expense, GrowthRecord, DocumentFile } from './types';
 import { INITIAL_PROFILE, MOCK_EVENTS, MOCK_EXPENSES, MOCK_DOCS, MOCK_WEIGHT_HISTORY, MOCK_HEIGHT_HISTORY } from './constants';
 
+// Hook personalizado para persistencia de datos
+function usePersistentState<T>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+  const [state, setState] = useState<T>(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(`Error reading localStorage key "${key}":`, error);
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(key, JSON.stringify(state));
+    } catch (error) {
+      console.error(`Error saving localStorage key "${key}":`, error);
+    }
+  }, [key, state]);
+
+  return [state, setState];
+}
+
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('inicio');
-  const [profile, setProfile] = useState<BabyProfile>(INITIAL_PROFILE);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   
-  // State Management
-  const [events, setEvents] = useState<CalendarEvent[]>(MOCK_EVENTS);
-  const [expenses, setExpenses] = useState<Expense[]>(MOCK_EXPENSES);
-  const [weightHistory, setWeightHistory] = useState<GrowthRecord[]>(MOCK_WEIGHT_HISTORY);
-  const [heightHistory, setHeightHistory] = useState<GrowthRecord[]>(MOCK_HEIGHT_HISTORY);
-  const [documents, setDocuments] = useState<DocumentFile[]>(MOCK_DOCS);
+  // Estados persistentes (se guardan en el móvil/navegador)
+  const [profile, setProfile] = usePersistentState<BabyProfile>('leo_profile', INITIAL_PROFILE);
+  const [isDarkMode, setIsDarkMode] = usePersistentState<boolean>('leo_theme', true);
+  
+  const [events, setEvents] = usePersistentState<CalendarEvent[]>('leo_events', MOCK_EVENTS);
+  const [expenses, setExpenses] = usePersistentState<Expense[]>('leo_expenses', MOCK_EXPENSES);
+  const [weightHistory, setWeightHistory] = usePersistentState<GrowthRecord[]>('leo_weight', MOCK_WEIGHT_HISTORY);
+  const [heightHistory, setHeightHistory] = usePersistentState<GrowthRecord[]>('leo_height', MOCK_HEIGHT_HISTORY);
+  const [documents, setDocuments] = usePersistentState<DocumentFile[]>('leo_docs', MOCK_DOCS);
 
-  // New State for Expenses Features
-  const [products, setProducts] = useState<string[]>(['Pañales T2', 'Toallitas Húmedas', 'Leche Fórmula', 'Crema Balsámica', 'Apiretal', 'Body Manga Larga']);
-  const [chequeLimit, setChequeLimit] = useState<number>(2500);
+  // Estados persistentes para funcionalidades extra
+  const [products, setProducts] = usePersistentState<string[]>('leo_products', ['Pañales T2', 'Toallitas Húmedas', 'Leche Fórmula', 'Crema Balsámica', 'Apiretal', 'Body Manga Larga']);
+  const [chequeLimit, setChequeLimit] = usePersistentState<number>('leo_cheque', 2500);
 
   // Theme Toggler
   const toggleTheme = () => {
-    const html = document.documentElement;
-    if (html.classList.contains('dark')) {
-      html.classList.remove('dark');
-      setIsDarkMode(false);
-    } else {
-      html.classList.add('dark');
-      setIsDarkMode(true);
-    }
+    setIsDarkMode(!isDarkMode);
   };
 
-  // Ensure theme matches state on mount
+  // Efecto para aplicar el tema
   useEffect(() => {
     if (isDarkMode) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
-  }, []);
+  }, [isDarkMode]);
 
   // Event Handlers
   const handleAddEvent = (e: CalendarEvent) => setEvents([...events, e]);
